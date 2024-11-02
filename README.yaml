@@ -1,70 +1,70 @@
-name: "template"
-
+name: "aws-cloudtrail"
 # Canonical GitHub repo
-github_repo: "cloudposse-terraform-components/template"
-
+github_repo: "cloudposse-terraform-components/aws-cloudtrail"
 # Short description of this project
 description: |-
-  Description of this component
+  This component is responsible for provisioning cloudtrail auditing in an individual account. It's expected to be used
+  alongside
+  [the `cloudtrail-bucket` component](https://github.com/cloudposse/terraform-aws-components/tree/main/modules/cloudtrail-bucket)
+  as it utilizes that bucket via remote state.
 
-usage: |-
-  **Stack Level**: Regional or Test47
+  This component can either be deployed selectively to various accounts with `is_organization_trail=false`, or
+  alternatively created in all accounts if deployed to the management account `is_organization_trail=true`.
 
-  Here's an example snippet for how to use this component.
-  
+  ## Usage
+
+  **Stack Level**: Global
+
+  The following is an example snippet for how to use this component:
+
+  (`gbl-root.yaml`)
+
   ```yaml
   components:
     terraform:
-      foo:
+      cloudtrail:
         vars:
           enabled: true
+          cloudtrail_bucket_environment_name: "ue1"
+          cloudtrail_bucket_stage_name: "audit"
+          cloudwatch_logs_retention_in_days: 730
+          is_organization_trail: true
   ```
 
+  <!-- prettier-ignore-start -->
+
+  <!-- prettier-ignore-end -->
+
+  ## References
+
+  - [cloudposse/terraform-aws-components](https://github.com/cloudposse/terraform-aws-components/tree/main/modules/cloudtrail) -
+    Cloud Posse's upstream component
 include:
   - "docs/terraform.md"
-
 tags:
-  - terraform
-  - terraform-modules
-  - aws
-  - components
-  - terraform-components
-  - root
-  - geodesic
-  - reference-implementation
-  - reference-architecture
-
+  - component/cloudtrail
+  - layer/foundation
+  - provider/aws
 # Categories of this project
 categories:
-  - terraform-modules/root
-  - terraform-components
-
+  - component/cloudtrail
+  - layer/foundation
+  - provider/aws
 # License of this project
 license: "APACHE2"
-
 # Badges to display
 badges:
-  - name: "Latest Release"
-    image: "https://img.shields.io/github/release/cloudposse-terraform-components/template.svg?style=for-the-badge"
-    url: "https://github.com/cloudposse-terraform-components/template/releases/latest"
-  - name: "Slack Community"
-    image: "https://slack.cloudposse.com/for-the-badge.svg"
-    url: "https://slack.cloudposse.com"
-
-references:
-  - name: "Cloud Posse Documentation"
-    description: "Complete documentation for the Cloud Posse solution"
-    url: "https://docs.cloudposse.com"
-  - name: "Reference Architectures"
-    description: "Launch effortlessly with our turnkey reference architectures, built either by your team or ours."
-    url: "https://cloudposse.com/"
-
+  - name: Latest Release
+    image: https://img.shields.io/github/release/cloudposse-terraform-components/aws-cloudtrail.svg?style=for-the-badge
+    url: https://github.com/cloudposse-terraform-components/aws-cloudtrail/releases/latest
+  - name: Slack Community
+    image: https://slack.cloudposse.com/for-the-badge.svg
+    url: https://slack.cloudposse.com
 related:
-- name: "Cloud Posse Terraform Modules"
-  description: Our collection of reusable Terraform modules used by our reference architectures.
-  url: "https://docs.cloudposse.com/modules/"
-- name: "Atmos"
-  description: "Atmos is like docker-compose but for your infrastructure"
-  url: "https://atmos.tools"
-
+  - name: "Cloud Posse Terraform Modules"
+    description: Our collection of reusable Terraform modules used by our reference architectures.
+    url: "https://docs.cloudposse.com/modules/"
+  - name: "Atmos"
+    description: "Atmos is like docker-compose but for your infrastructure"
+    url: "https://atmos.tools"
 contributors: [] # If included generates contribs
