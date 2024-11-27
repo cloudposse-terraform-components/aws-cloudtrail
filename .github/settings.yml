@@ -1,0 +1,7 @@
+# Upstream changes from _extends are only recognized when modifications are made to this file in the default branch.
+_extends: .github
+repository:
+  name: aws-cloudtrail
+  description: This component is responsible for provisioning cloudtrail auditing in an individual account
+  homepage: https://cloudposse.com/accelerate
+  topics: terraform, terraform-component
