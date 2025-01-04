@@ -5,5 +5,3 @@ repository:
   description: This component is responsible for provisioning cloudtrail auditing in an individual account
   homepage: https://cloudposse.com/accelerate
   topics: terraform, terraform-component
-
-
