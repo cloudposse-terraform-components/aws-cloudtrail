@@ -1,0 +1,11 @@
+components:
+  terraform:
+    cloudtrail/org-level:
+      metadata:
+        component: cloudtrail
+      vars:
+        enabled: true
+        cloudtrail_bucket_environment_name: "ue2"
+        cloudtrail_bucket_stage_name: "test"
+        cloudwatch_logs_retention_in_days: 0
+        is_organization_trail: true

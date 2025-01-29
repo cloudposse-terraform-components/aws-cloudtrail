@@ -1,0 +1,5 @@
+components:
+  terraform:
+    cloudtrail-bucket:
+      metadata:
+        component: cloudtrail-bucket
