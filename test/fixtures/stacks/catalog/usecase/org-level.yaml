@@ -2,7 +2,7 @@ components:
   terraform:
     cloudtrail/org-level:
       metadata:
-        component: cloudtrail
+        component: target
       vars:
         enabled: true
         cloudtrail_bucket_environment_name: "ue2"

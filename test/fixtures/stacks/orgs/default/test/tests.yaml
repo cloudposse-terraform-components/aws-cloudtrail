@@ -3,3 +3,4 @@ import:
   - catalog/cloudtrail-bucket
   - catalog/usecase/basic
   - catalog/usecase/org-level
+  - catalog/usecase/disabled

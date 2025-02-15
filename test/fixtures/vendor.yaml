@@ -28,14 +28,3 @@ spec:
         - "**/*.tftmpl"
         - "**/modules/**"
       excluded_paths: []
-
-    - component: "cloudtrail"
-      source: "../../src"
-      targets:
-        - "components/terraform/cloudtrail"
-      included_paths:
-        - "**/*.tf"
-        - "**/*.md"
-        - "**/*.tftmpl"
-        - "**/modules/**"
-      excluded_paths: []
