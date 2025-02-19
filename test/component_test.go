@@ -113,7 +113,6 @@ func (s *ComponentSuite) TestOrgLevel() {
 func (s *ComponentSuite) TestEnabledFlag() {
 	const component = "cloudtrail/disabled"
 	const stack = "default-test"
-// (The unused constant was removed from this snippet)
 
 	s.VerifyEnabledFlag(component, stack, nil)
 }
