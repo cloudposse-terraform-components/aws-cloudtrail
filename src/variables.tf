@@ -71,3 +71,9 @@ variable "audit_access_enabled" {
   default     = false
   description = "If `true`, allows the Audit account access to read Cloudtrail logs directly from S3. This is a requirement for running Athena queries in the Audit account."
 }
+
+variable "account_map_component_name" {
+  type        = string
+  description = "The name of a account-map component"
+  default     = "account-map"
+}
