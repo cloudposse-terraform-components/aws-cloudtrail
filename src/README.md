@@ -7,14 +7,12 @@ tags:
 
 # Component: `cloudtrail`
 
-This component is responsible for provisioning cloudtrail auditing in an individual account. It's expected to be used
-alongside
+This component is responsible for provisioning CloudTrail auditing in an individual AWS account. It's expected to be used alongside
 [the `cloudtrail-bucket` component](https://github.com/cloudposse/terraform-aws-components/tree/main/modules/cloudtrail-bucket)
 as it utilizes that bucket via remote state.
 
 This component can either be deployed selectively to various accounts with `is_organization_trail=false`, or
-alternatively created in all accounts if deployed to the management account `is_organization_trail=true`.
-
+alternatively created in all accounts if deployed to the management account with `is_organization_trail=true`.
 ## Usage
 
 **Stack Level**: Global
@@ -36,7 +34,10 @@ components:
 ```
 
 <!-- prettier-ignore-start -->
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- prettier-ignore-end -->
+
+
+<!-- markdownlint-disable -->
 ## Requirements
 
 | Name | Version |
@@ -122,12 +123,17 @@ components:
 | <a name="output_cloudtrail_logs_log_group_name"></a> [cloudtrail\_logs\_log\_group\_name](#output\_cloudtrail\_logs\_log\_group\_name) | CloudTrail Logs log group name |
 | <a name="output_cloudtrail_logs_role_arn"></a> [cloudtrail\_logs\_role\_arn](#output\_cloudtrail\_logs\_role\_arn) | CloudTrail Logs role ARN |
 | <a name="output_cloudtrail_logs_role_name"></a> [cloudtrail\_logs\_role\_name](#output\_cloudtrail\_logs\_role\_name) | CloudTrail Logs role name |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-<!-- prettier-ignore-end -->
+<!-- markdownlint-restore -->
+
+
 
 ## References
 
-- [cloudposse/terraform-aws-components](https://github.com/cloudposse/terraform-aws-components/tree/main/modules/cloudtrail) -
-  Cloud Posse's upstream component
+
+- [cloudposse/terraform-aws-components](https://github.com/cloudposse/terraform-aws-components/tree/main/modules/cloudtrail) - Cloud Posse's upstream component
+
+
+
 
 [<img src="https://cloudposse.com/logo-300x69.svg" height="32" align="right"/>](https://cpco.io/homepage?utm_source=github&utm_medium=readme&utm_campaign=cloudposse-terraform-components/aws-cloudtrail&utm_content=)
+
