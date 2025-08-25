@@ -63,5 +63,6 @@ resource "aws_cloudwatch_log_group" "cloudtrail_cloudwatch_logs" {
   count             = local.enabled ? 1 : 0
   name              = module.this.id
   retention_in_days = var.cloudwatch_logs_retention_in_days
+  log_group_class   = var.cloudwatch_log_group_class
   tags              = module.this.tags
 }
