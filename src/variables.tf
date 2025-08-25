@@ -12,10 +12,10 @@ variable "cloudwatch_logs_retention_in_days" {
 variable "cloudwatch_log_group_class" {
   type        = string
   default     = "STANDARD"
-  description = "Specifies the log class of the log group. Possible values are: STANDARD, INFREQUENT_ACCESS, or DELIVERY."
+  description = "Specifies the log class of the log group. Possible values are STANDARD or INFREQUENT_ACCESS."
   validation {
-    condition     = contains(["STANDARD", "INFREQUENT_ACCESS", "DELIVERY"], var.cloudwatch_log_group_class)
-    error_message = "The cloudwatch_log_group_class must be one of the following values: STANDARD, INFREQUENT_ACCESS, or DELIVERY."
+    condition     = contains(["STANDARD", "INFREQUENT_ACCESS"], var.cloudwatch_log_group_class)
+    error_message = "The cloudwatch_log_group_class must be STANDARD or INFREQUENT_ACCESS."
   }
 }
 
