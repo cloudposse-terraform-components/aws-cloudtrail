@@ -87,3 +87,38 @@ variable "account_map_component_name" {
   description = "The name of a account-map component"
   default     = "account-map"
 }
+
+variable "kms_key_alias" {
+  type        = string
+  description = "The alias for the KMS key. If not set, the alias will be set to `alias/<module.this.id>`"
+  default     = null
+}
+
+variable "kms_key_enabled" {
+  type        = bool
+  description = "Toggle to enable/disable the encrypted log group feature that has not been extensively tested."
+  default     = false
+}
+
+variable "kms_abac_statements" {
+  type = list(object({
+    sid        = optional(string)
+    effect     = string
+    actions    = list(string)
+    principals = map(list(string))
+    conditions = list(object({
+      test     = string
+      variable = string
+      values   = list(string)
+    }))
+  }))
+  description = <<-EOT
+    A list of ABAC statements which are placed in an IAM policy.
+    Each statement must have the following attributes:
+    - `sid` (optional): A unique identifier for the statement.
+    - `effect`: The effect of the statement. Valid values are `Allow` and `Deny`.
+    - `actions`: A list of actions to allow or deny.
+    - `conditions`: A list of conditions to evaluate when the statement is applied.
+  EOT
+  default     = []
+}

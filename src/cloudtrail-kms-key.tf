@@ -1,6 +1,10 @@
 locals {
   audit_access_enabled = module.this.enabled && var.audit_access_enabled
   audit_account_id     = module.account_map.outputs.full_account_map[module.account_map.outputs.audit_account_account_name]
+
+  kms_key_alias    = var.kms_key_alias != null ? var.kms_key_alias : format("alias/%s", module.this.id)
+  kms_abac_enabled = length(var.kms_abac_statements) > 0
+
 }
 
 module "kms_key_cloudtrail" {
@@ -97,4 +101,44 @@ data "aws_iam_policy_document" "kms_key_cloudtrail" {
       }
     }
   }
+}
+
+data "aws_iam_policy_document" "abac_policy" {
+  count = local.enabled && var.kms_key_enabled && local.kms_abac_enabled ? 1 : 0
+  dynamic "statement" {
+    for_each = var.kms_abac_statements
+    content {
+      sid     = lookup(statement.value, "sid", null)
+      effect  = statement.value.effect
+      actions = statement.value.actions
+      resources = [
+        module.kms_key_cloudtrail.key_arn
+      ]
+
+      condition {
+        test     = "ForAnyValue:StringLike"
+        variable = "kms:ResourceAliases"
+        values = [
+          local.kms_key_alias
+        ]
+      }
+
+      dynamic "condition" {
+        for_each = statement.value.conditions
+        content {
+          test     = condition.value.test
+          variable = condition.value.variable
+          values   = condition.value.values
+        }
+      }
+    }
+  }
+}
+
+# https://docs.aws.amazon.com/kms/latest/developerguide/abac.html
+resource "aws_iam_policy" "abac_policy" {
+  count       = local.enabled && var.kms_key_enabled && (local.kms_abac_enabled ? 1 : 0) > 0 ? 1 : 0
+  name        = format("%s-abac-policy", module.this.id)
+  description = "ABAC policy for the KMS key used by the CloudTrail trail"
+  policy      = join("", data.aws_iam_policy_document.abac_policy[*].json)
 }
