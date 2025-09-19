@@ -4,7 +4,6 @@ locals {
 
   kms_key_alias    = var.kms_key_alias != null ? var.kms_key_alias : format("alias/%s", module.this.id)
   kms_abac_enabled = length(var.kms_abac_statements) > 0
-
 }
 
 module "kms_key_cloudtrail" {
@@ -44,7 +43,6 @@ data "aws_iam_policy_document" "kms_key_cloudtrail" {
 
     principals {
       type = "AWS"
-
       identifiers = [
         format("arn:${join("", data.aws_partition.current[*].partition)}:iam::%s:root", join("", data.aws_caller_identity.this[*].account_id))
       ]
@@ -57,7 +55,8 @@ data "aws_iam_policy_document" "kms_key_cloudtrail" {
 
     actions = [
       "kms:Encrypt",
-      "kms:GenerateDataKey*"
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey"
     ]
 
     resources = [
@@ -66,16 +65,13 @@ data "aws_iam_policy_document" "kms_key_cloudtrail" {
 
     principals {
       type = "Service"
-
       identifiers = [
         "cloudtrail.amazonaws.com"
       ]
     }
-
     condition {
       test     = "StringLike"
       variable = "kms:EncryptionContext:aws:cloudtrail:arn"
-
       values = [
         format("arn:${join("", data.aws_partition.current[*].partition)}:cloudtrail:*:%s:trail/*", join("", data.aws_caller_identity.this[*].account_id))
       ]
@@ -87,33 +83,39 @@ data "aws_iam_policy_document" "kms_key_cloudtrail" {
     content {
       sid    = "Allow Audit to decrypt with the KMS key"
       effect = "Allow"
+
       actions = [
-        "kms:Decrypt*",
+        "kms:Decrypt",
+        "kms:DescribeKey"
       ]
+
       resources = [
         "*"
       ]
+
       principals {
         type = "AWS"
         identifiers = [
           format("arn:${join("", data.aws_partition.current[*].partition)}:iam::%s:root", local.audit_account_id)
         ]
       }
+      condition {
+        test     = "StringLike"
+        variable = "kms:EncryptionContext:aws:cloudtrail:arn"
+        values = [
+          format("arn:${join("", data.aws_partition.current[*].partition)}:cloudtrail:*:%s:trail/*", join("", data.aws_caller_identity.this[*].account_id))
+        ]
+      }
     }
   }
-}
 
-data "aws_iam_policy_document" "abac_policy" {
-  count = local.enabled && var.kms_key_enabled && local.kms_abac_enabled ? 1 : 0
   dynamic "statement" {
-    for_each = var.kms_abac_statements
+    for_each = var.kms_key_enabled && local.kms_abac_enabled ? var.kms_abac_statements : []
     content {
-      sid     = lookup(statement.value, "sid", null)
-      effect  = statement.value.effect
-      actions = statement.value.actions
-      resources = [
-        module.kms_key_cloudtrail.key_arn
-      ]
+      sid       = lookup(statement.value, "sid", null)
+      effect    = statement.value.effect
+      actions   = statement.value.actions
+      resources = ["*"]
 
       condition {
         test     = "ForAnyValue:StringLike"
@@ -133,12 +135,4 @@ data "aws_iam_policy_document" "abac_policy" {
       }
     }
   }
-}
-
-# https://docs.aws.amazon.com/kms/latest/developerguide/abac.html
-resource "aws_iam_policy" "abac_policy" {
-  count       = local.enabled && var.kms_key_enabled && (local.kms_abac_enabled ? 1 : 0) > 0 ? 1 : 0
-  name        = format("%s-abac-policy", module.this.id)
-  description = "ABAC policy for the KMS key used by the CloudTrail trail"
-  policy      = join("", data.aws_iam_policy_document.abac_policy[*].json)
 }
