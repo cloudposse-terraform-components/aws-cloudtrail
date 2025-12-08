@@ -76,3 +76,6 @@ github/
 *.ovpn
 
 *.zip
+
+# Vendored dependencies (used for testing)
+account-map/
