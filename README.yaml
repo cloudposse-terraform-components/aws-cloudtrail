@@ -9,6 +9,16 @@ description: |-
 
   This component can either be deployed selectively to various accounts with `is_organization_trail=false`, or
   alternatively created in all accounts if deployed to the management account with `is_organization_trail=true`.
+
+  ## Component Features
+
+  - **Organization Trail**: Supports organization-wide trail from the management account
+  - **CloudWatch Integration**: CloudWatch Logs integration with configurable retention
+  - **KMS Encryption**: Optional KMS key encryption for CloudTrail logs
+  - **Multi-Region Trail**: Supports creating trails across all AWS regions
+  - **Account Verification**: Optional safety check that validates Terraform is running in the correct AWS account
+  - **Flexible Account Map**: Supports both remote-state account-map lookups (default) and static account map variables
+
 usage: |-
   **Stack Level**: Global
 
