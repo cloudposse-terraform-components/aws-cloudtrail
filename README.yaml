@@ -17,7 +17,7 @@ description: |-
   - **KMS Encryption**: Optional KMS key encryption for CloudTrail logs
   - **Multi-Region Trail**: Supports creating trails across all AWS regions
   - **Account Verification**: Optional safety check that validates Terraform is running in the correct AWS account
-  - **Flexible Account Map**: Supports both remote-state account-map lookups (default) and static account map variables
+  - **Flexible Account Map**: Supports both remote-state account-map lookups and static account map variables (default)
 
 usage: |-
   **Stack Level**: Global

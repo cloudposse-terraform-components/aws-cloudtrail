@@ -11,10 +11,10 @@ variable "account_verification_enabled" {
 variable "account_map_enabled" {
   type        = bool
   description = <<-DOC
-  Enable the account map component. When true (default), the component fetches account mappings from the
-  `account-map` component via remote state. When false, the component uses the static `account_map` variable instead.
+  Enable the account map component. When true, the component fetches account mappings from the
+  `account-map` component via remote state. When false (default), the component uses the static `account_map` variable instead.
   DOC
-  default     = true
+  default     = false
 }
 
 variable "account_map" {
