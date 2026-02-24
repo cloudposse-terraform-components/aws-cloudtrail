@@ -79,6 +79,41 @@ data "aws_iam_policy_document" "kms_key_cloudtrail" {
   }
 
   dynamic "statement" {
+    for_each = var.kms_key_enabled ? [1] : []
+    content {
+      sid    = "Allow CloudWatch Logs to encrypt with the KMS key"
+      effect = "Allow"
+
+      actions = [
+        "kms:Encrypt*",
+        "kms:Decrypt*",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*",
+        "kms:Describe*"
+      ]
+
+      resources = [
+        "*"
+      ]
+
+      principals {
+        type = "Service"
+        identifiers = [
+          format("logs.%s.amazonaws.com", var.region)
+        ]
+      }
+
+      condition {
+        test     = "ArnLike"
+        variable = "kms:EncryptionContext:aws:logs:arn"
+        values = [
+          format("arn:${join("", data.aws_partition.current[*].partition)}:logs:${var.region}:%s:log-group:*", join("", data.aws_caller_identity.this[*].account_id))
+        ]
+      }
+    }
+  }
+
+  dynamic "statement" {
     for_each = local.audit_access_enabled ? [1] : []
     content {
       sid    = "Allow Audit to decrypt with the KMS key"
