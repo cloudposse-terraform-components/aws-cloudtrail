@@ -13,6 +13,7 @@ import (
 	awshelper "github.com/cloudposse/test-helpers/pkg/aws"
 	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 type ComponentSuite struct {
@@ -158,8 +159,8 @@ func (s *ComponentSuite) TestKmsEnabled() {
 	logGroups, err := cwlClient.DescribeLogGroups(context.Background(), &cloudwatchlogs.DescribeLogGroupsInput{
 		LogGroupNamePrefix: &cloudtrailLogsLogGroupName,
 	})
-	assert.NoError(s.T(), err)
-	assert.NotEmpty(s.T(), logGroups.LogGroups)
+	require.NoError(s.T(), err)
+	require.NotEmpty(s.T(), logGroups.LogGroups, "expected at least one log group matching prefix %s", cloudtrailLogsLogGroupName)
 	assert.NotNil(s.T(), logGroups.LogGroups[0].KmsKeyId, "CloudWatch Log Group should be encrypted with KMS key")
 
 	s.DriftTest(component, testStack, nil)
