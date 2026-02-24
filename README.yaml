@@ -36,6 +36,8 @@ usage: |-
           cloudtrail_bucket_stage_name: "audit"
           cloudwatch_logs_retention_in_days: 730
           is_organization_trail: true
+          # Encrypt the CloudWatch Log Group with the CloudTrail KMS key
+          kms_key_enabled: true
   ```
 
   <!-- prettier-ignore-start -->

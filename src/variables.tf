@@ -165,7 +165,7 @@ variable "kms_key_alias" {
 
 variable "kms_key_enabled" {
   type        = bool
-  description = "Toggle to enable/disable the encrypted log group feature that has not been extensively tested."
+  description = "If `true`, encrypts the CloudWatch Log Group with the CloudTrail KMS key and adds the required KMS key policy for CloudWatch Logs"
   default     = false
 }
 

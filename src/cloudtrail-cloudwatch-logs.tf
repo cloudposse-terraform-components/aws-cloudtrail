@@ -64,5 +64,6 @@ resource "aws_cloudwatch_log_group" "cloudtrail_cloudwatch_logs" {
   name              = module.this.id
   retention_in_days = var.cloudwatch_logs_retention_in_days
   log_group_class   = var.cloudwatch_log_group_class
+  kms_key_id        = var.kms_key_enabled ? module.kms_key_cloudtrail.key_arn : null
   tags              = module.this.tags
 }

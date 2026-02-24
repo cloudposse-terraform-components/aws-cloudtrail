@@ -2,5 +2,6 @@ import:
   - orgs/default/test/_defaults
   - catalog/cloudtrail-bucket
   - catalog/usecase/basic
+  - catalog/usecase/kms-enabled
   - catalog/usecase/org-level
   - catalog/usecase/disabled
