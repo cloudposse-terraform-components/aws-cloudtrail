@@ -1,6 +1,6 @@
 module "cloudtrail_bucket" {
   source  = "cloudposse/stack-config/yaml//modules/remote-state"
-  version = "1.8.0"
+  version = "2.0.0"
 
   component   = var.cloudtrail_bucket_component_name
   environment = var.cloudtrail_bucket_environment_name
@@ -21,7 +21,7 @@ module "cloudtrail_bucket" {
 #   - Allows the component to function without the account-map dependency
 module "account_map" {
   source  = "cloudposse/stack-config/yaml//modules/remote-state"
-  version = "1.8.0"
+  version = "2.0.0"
 
   component   = var.account_map_component_name
   tenant      = var.account_map_enabled ? module.iam_roles.global_tenant_name : null
