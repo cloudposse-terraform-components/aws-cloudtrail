@@ -36,6 +36,7 @@ locals {
   # 3. Expected account name can be constructed from tenant and stage
   # 4. Expected account ID exists in the account_map for the constructed account name
   should_verify_account = (
+    local.enabled &&
     var.account_verification_enabled &&
     length(local.account_map) > 0 &&
     local.expected_account_name != null &&
