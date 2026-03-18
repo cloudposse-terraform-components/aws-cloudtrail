@@ -18,10 +18,6 @@ module "kms_key_cloudtrail" {
   context = module.this.context
 }
 
-data "aws_caller_identity" "this" {
-  count = local.enabled ? 1 : 0
-}
-
 data "aws_partition" "current" {
   count = local.enabled ? 1 : 0
 }
