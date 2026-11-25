@@ -28,6 +28,19 @@ usage: |-
           is_organization_trail: true
           # Encrypt the CloudWatch Log Group with the CloudTrail KMS key
           kms_key_enabled: true
+          # Optional: log S3 data events. Advanced selectors replace the default
+          # selector, so keep a Management selector to keep management events.
+          advanced_event_selector:
+            - name: Management events
+              field_selector:
+                - field: eventCategory
+                  equals: ["Management"]
+            - name: S3 data events
+              field_selector:
+                - field: eventCategory
+                  equals: ["Data"]
+                - field: resources.type
+                  equals: ["AWS::S3::Object"]
   ```
 
   <!-- prettier-ignore-start -->

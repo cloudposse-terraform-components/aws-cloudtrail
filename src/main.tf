@@ -15,6 +15,7 @@ module "cloudtrail" {
   is_organization_trail         = var.is_organization_trail
   s3_bucket_name                = module.cloudtrail_bucket.outputs.cloudtrail_bucket_id
   kms_key_arn                   = module.kms_key_cloudtrail.key_arn
+  advanced_event_selector       = var.advanced_event_selector
 
   context = module.this.context
 }
