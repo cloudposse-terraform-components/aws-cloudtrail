@@ -122,3 +122,30 @@ variable "kms_abac_statements" {
   EOT
   default     = []
 }
+
+variable "advanced_event_selector" {
+  type = list(object({
+    name = optional(string)
+    field_selector = list(object({
+      field           = string
+      equals          = optional(list(string))
+      not_equals      = optional(list(string))
+      starts_with     = optional(list(string))
+      not_starts_with = optional(list(string))
+      ends_with       = optional(list(string))
+      not_ends_with   = optional(list(string))
+    }))
+  }))
+  description = <<-EOT
+    Advanced event selectors for the trail, passed to the `cloudposse/cloudtrail/aws` module.
+    Use them to log data events (for example S3 object-level read and write events).
+
+    Advanced selectors replace the trail's default selector: once any selector is set, the trail
+    logs only what the selectors match. Keep a selector with `eventCategory = Management` in the
+    list unless the trail is meant to log data events only.
+
+    Empty (default) leaves the trail on the AWS default: all management events, no data events.
+    See https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-data-events-with-cloudtrail.html
+  EOT
+  default     = []
+}

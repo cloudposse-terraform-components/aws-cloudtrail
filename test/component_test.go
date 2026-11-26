@@ -166,6 +166,35 @@ func (s *ComponentSuite) TestKmsEnabled() {
 	s.DriftTest(component, testStack, nil)
 }
 
+func (s *ComponentSuite) TestDataEvents() {
+	const component = "cloudtrail/data-events"
+
+	defer s.DestroyAtmosComponent(s.T(), component, testStack, nil)
+	options, _ := s.DeployAtmosComponent(s.T(), component, testStack, nil)
+	assert.NotNil(s.T(), options)
+
+	cloudtrailArn := atmos.Output(s.T(), options, "cloudtrail_arn")
+
+	client := awshelper.NewCloudTrailClient(s.T(), testAwsRegion)
+	selectors, err := client.GetEventSelectors(context.Background(), &cloudtrail.GetEventSelectorsInput{
+		TrailName: &cloudtrailArn,
+	})
+	require.NoError(s.T(), err)
+
+	// Advanced selectors replace the basic event selectors.
+	assert.Empty(s.T(), selectors.EventSelectors)
+	require.Len(s.T(), selectors.AdvancedEventSelectors, 2)
+
+	names := map[string]bool{}
+	for _, selector := range selectors.AdvancedEventSelectors {
+		names[*selector.Name] = true
+	}
+	assert.True(s.T(), names["Management events"])
+	assert.True(s.T(), names["S3 data events"])
+
+	s.DriftTest(component, testStack, nil)
+}
+
 func (s *ComponentSuite) TestEnabledFlag() {
 	const component = "cloudtrail/disabled"
 
