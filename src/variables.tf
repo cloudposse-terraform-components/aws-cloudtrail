@@ -13,6 +13,10 @@ variable "cloudwatch_log_group_class" {
   type        = string
   default     = "STANDARD"
   description = "Specifies the log class of the log group. Possible values are STANDARD or INFREQUENT_ACCESS."
+  validation {
+    condition     = contains(["STANDARD", "INFREQUENT_ACCESS"], var.cloudwatch_log_group_class)
+    error_message = "The cloudwatch_log_group_class must be STANDARD or INFREQUENT_ACCESS."
+  }
 }
 
 variable "enable_logging" {
